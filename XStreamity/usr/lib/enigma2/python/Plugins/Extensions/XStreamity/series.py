@@ -1762,6 +1762,68 @@ class XStreamity_Categories(Screen):
 
         self.buildLists()
 
+    def favourite(self):
+        # print("**** favourite ***")
+        if self["main_list"].getCurrent():
+            currentindex = self["main_list"].getIndex()
+            favExists = False
+            favStream_id = None
+
+            for fav in glob.current_playlist["player_info"]["vodfavourites"]:
+                if self["main_list"].getCurrent()[4] == fav["stream_id"]:
+                    favExists = True
+                    favStream_id = fav["stream_id"]
+                    break
+
+            self.list2[currentindex][7] = not self.list2[currentindex][7]
+
+            if favExists:
+                glob.current_playlist["player_info"]["vodfavourites"][:] = [x for x in glob.current_playlist["player_info"]["vodfavourites"] if str(x["stream_id"]) != str(favStream_id)]
+            else:
+
+                # index = 0
+                # name = 1
+                # stream_id = 2
+                # stream_icon = 3
+                # added = 4
+                # rating = 5
+                # next_url = 6
+                # favourite = 7
+                # container_extension = 8
+
+                newfavourite = {
+                    "name": self.list2[currentindex][1],
+                    "stream_id": self.list2[currentindex][2],
+                    "stream_icon": self.list2[currentindex][3],
+                    "added": self.list2[currentindex][4],
+                    "rating": self.list2[currentindex][5],
+                    "container_extension": self.list2[currentindex][8]
+                }
+
+                glob.current_playlist["player_info"]["vodfavourites"].insert(0, newfavourite)
+                self.hideVod()
+
+            with open(playlists_json, "r") as f:
+                try:
+                    self.playlists_all = json.load(f)
+                except:
+                    os.remove(playlists_json)
+
+            if self.playlists_all:
+                x = 0
+                for playlists in self.playlists_all:
+                    if playlists["playlist_info"]["domain"] == glob.current_playlist["playlist_info"]["domain"] and playlists["playlist_info"]["username"] == glob.current_playlist["playlist_info"]["username"] and playlists["playlist_info"]["password"] == glob.current_playlist["playlist_info"]["password"]:
+                        self.playlists_all[x] = glob.current_playlist
+                        break
+                    x += 1
+            with open(playlists_json, "w") as f:
+                json.dump(self.playlists_all, f)
+
+            if self.chosen_category == "favourites":
+                del self.list2[currentindex]
+
+            self.buildLists()
+
     def hideVod(self):
         # print("*** hideVod ***")
         self["vod_background"].hide()
