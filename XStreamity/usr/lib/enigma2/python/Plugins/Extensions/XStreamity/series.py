@@ -1772,7 +1772,7 @@ class XStreamity_Categories(Screen):
             favExists = False
             favStream_id = None
 
-            for fav in glob.current_playlist["player_info"]["vodfavourites"]:
+            for fav in glob.current_playlist["player_info"]["seriesfavourites"]:
                 if self["main_list"].getCurrent()[4] == fav["stream_id"]:
                     favExists = True
                     favStream_id = fav["stream_id"]
@@ -1781,7 +1781,7 @@ class XStreamity_Categories(Screen):
             self.list2[currentindex][7] = not self.list2[currentindex][7]
 
             if favExists:
-                glob.current_playlist["player_info"]["vodfavourites"][:] = [x for x in glob.current_playlist["player_info"]["vodfavourites"] if str(x["stream_id"]) != str(favStream_id)]
+                glob.current_playlist["player_info"]["seriesfavourites"][:] = [x for x in glob.current_playlist["player_info"]["seriesfavourites"] if str(x["stream_id"]) != str(favStream_id)]
             else:
 
                 # index = 0
@@ -1803,7 +1803,7 @@ class XStreamity_Categories(Screen):
                     "container_extension": self.list2[currentindex][8]
                 }
 
-                glob.current_playlist["player_info"]["vodfavourites"].insert(0, newfavourite)
+                glob.current_playlist["player_info"]["seriesfavourites"].insert(0, newfavourite)
                 self.hideVod()
 
             with open(playlists_json, "r") as f:
