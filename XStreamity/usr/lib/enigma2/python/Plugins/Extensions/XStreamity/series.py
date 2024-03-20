@@ -323,7 +323,10 @@ class XStreamity_Categories(Screen):
     def getSeries(self):
         # print("*** getSeries ***")
         # print("*** url ***", glob.nextlist[-1]["next_url"])
-        response = self.downloadApiData(glob.nextlist[-1]["next_url"])
+        if self.chosen_category == "favourites":
+            response = glob.current_playlist["player_info"]["vodfavourites"]
+        else:
+            response = self.downloadApiData(glob.nextlist[-1]["next_url"])
         index = 0
         self.list2 = []
 
