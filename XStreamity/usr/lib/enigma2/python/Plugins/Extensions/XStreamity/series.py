@@ -214,6 +214,8 @@ class XStreamity_Categories(Screen):
             "rec": self.downloadVideo,
             "5": self.downloadVideo,
             "0": self.reset,
+            "tv": self.favourite,
+            "stop": self.favourite,
             "menu": self.showHiddenList,
             "1": self.clearWatched
         }, -1)
