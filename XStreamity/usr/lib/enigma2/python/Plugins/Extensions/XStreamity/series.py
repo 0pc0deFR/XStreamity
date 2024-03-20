@@ -290,6 +290,7 @@ class XStreamity_Categories(Screen):
         currentHidden = glob.current_playlist["player_info"]["serieshidden"]
 
         hidden = False
+        hiddenfavourites = False
 
         if "0" in currentHidden:
             hidden = True
@@ -313,6 +314,8 @@ class XStreamity_Categories(Screen):
                 hidden = True
 
             self.list1.append([index, str(category_name), str(category_id), hidden])
+            index += 1
+            self.prelist.append([index, _("FAVOURITES"), "-1", hiddenfavourites])
             index += 1
 
         glob.originalChannelList1 = self.list1[:]
